@@ -32,9 +32,17 @@ public class SimpleCommandMap implements CommandMap {
 
     // Memegot start
     private void setDefaultCommands() {
-        final ReloadCommand reload = new ReloadCommand("reload");
-        this.knownCommands.put("bukkit:reload", reload);
-        this.knownCommands.put("bukkit:rl", reload);
+        Command disabledReload = new Command("reload") {
+            @Override
+            public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+                sender.sendMessage(net.kyori.adventure.text.Component.text("This command has been purposely disabled.", net.kyori.adventure.text.format.NamedTextColor.RED));
+                return true;
+            }
+        };
+        this.knownCommands.put("reload", disabledReload);
+        this.knownCommands.put("bukkit:reload", disabledReload);
+        this.knownCommands.put("rl", disabledReload);
+        this.knownCommands.put("bukkit:rl", disabledReload);
         // disable useless timings command
         // register("bukkit", new co.aikar.timings.TimingsCommand("timings"));
     }
