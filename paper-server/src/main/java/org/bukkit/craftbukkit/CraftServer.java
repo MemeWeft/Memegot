@@ -606,8 +606,12 @@ public final class CraftServer implements Server {
             if (!io.papermc.paper.configuration.GlobalConfiguration.get().misc.loadPermissionsYmlBeforePlugins) this.loadCustomPermissions(); // Paper
             this.syncCommands();
 
-            // Memegot
+            // Memegot start
             me.memeweft.paper.Memegot.boot(java.nio.file.Path.of("."));
+            for (org.bukkit.World world : getWorlds()) {
+                world.setTime(6000);
+            }
+            // Memegot end
         }
     }
 
