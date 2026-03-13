@@ -347,7 +347,7 @@ public class GlobalConfiguration extends ConfigurationPart {
         @Comment("See Fix MC-163962; prevent villager demand from going negative.")
         public boolean preventNegativeVillagerDemand = false;
         @Comment("Whether the nether dimension is enabled and will be loaded.")
-        public boolean enableNether = true;
+        public boolean enableNether = false; // Memegot
         @Comment("Keeps Paper's fix for MC-159283 enabled. Disable to use vanilla End ring terrain.")
         public boolean fixFarEndTerrainGeneration = true;
     }
