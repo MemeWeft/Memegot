@@ -123,8 +123,8 @@ public final class Bukkit {
     // Memegot start
     @NotNull
     public static String getVersionMessage() {
-        return "\nThis server is running §c" + me.memeweft.paper.MemeAPI.NAME
-            + " §rversion " + me.memeweft.paper.MemeAPI.VERSION
+        return "\nThis server is running " + me.memeweft.paper.MemeAPI.NAME
+            + " version " + me.memeweft.paper.MemeAPI.VERSION
             + " (Implementing API version " + getBukkitVersion() + ")\n";
     }
     // Memegot end
