@@ -13,6 +13,7 @@ public final class GameConfig {
 
     private final Path file;
     private CombatMode globalMode = CombatMode.MODERN;
+    private boolean mobAi = false;
 
     public GameConfig(Path configDir) {
         this.file = configDir.resolve("game.yml");
@@ -23,10 +24,15 @@ public final class GameConfig {
 
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file.toFile());
         globalMode = CombatMode.valueOf(config.getString("global-mode", "MODERN").toUpperCase());
+        mobAi = config.getBoolean("mob-ai", false);
     }
 
     public CombatMode getGlobalMode() {
         return globalMode;
+    }
+
+    public boolean isMobAi() {
+        return mobAi;
     }
 
     private void ensureExists(String resource) {
