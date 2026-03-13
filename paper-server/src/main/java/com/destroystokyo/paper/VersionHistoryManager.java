@@ -29,7 +29,7 @@ public enum VersionHistoryManager {
     private VersionData currentData = null;
 
     VersionHistoryManager() {
-        final Path path = Paths.get("version_history.json");
+        final Path path = Paths.get("config/version_history.json"); // Memegot
 
         if (Files.exists(path)) {
             // Basic file sanity checks

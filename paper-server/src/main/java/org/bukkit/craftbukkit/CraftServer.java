@@ -1131,6 +1131,7 @@ public final class CraftServer implements Server {
             stream = new FileInputStream(file);
         } catch (FileNotFoundException ex) {
             try {
+                file.getParentFile().mkdirs(); // Memegot
                 file.createNewFile();
             } finally {
                 return;

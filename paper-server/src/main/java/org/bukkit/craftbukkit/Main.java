@@ -30,7 +30,7 @@ public class Main {
                 this.acceptsAll(asList("c", "config"), "Properties file to use")
                         .withRequiredArg()
                         .ofType(File.class)
-                        .defaultsTo(new File("server.properties"))
+                        .defaultsTo(new File("config/server.properties")) // Memegot
                         .describedAs("Properties file");
 
                 this.acceptsAll(asList("P", "plugins"), "Plugin directory to use")
@@ -82,13 +82,13 @@ public class Main {
                 this.acceptsAll(asList("b", "bukkit-settings"), "File for bukkit settings")
                         .withRequiredArg()
                         .ofType(File.class)
-                        .defaultsTo(new File("bukkit.yml"))
+                        .defaultsTo(new File("config/bukkit.yml")) // Memegot
                         .describedAs("Yml file");
 
                 this.acceptsAll(asList("C", "commands-settings"), "File for command settings")
                         .withRequiredArg()
                         .ofType(File.class)
-                        .defaultsTo(new File("commands.yml"))
+                        .defaultsTo(new File("config/commands.yml")) // Memegot
                         .describedAs("Yml file");
 
                 this.accepts("forceUpgrade", "Whether to force a world upgrade");
@@ -112,7 +112,7 @@ public class Main {
                 this.acceptsAll(asList("S", "spigot-settings"), "File for spigot settings")
                         .withRequiredArg()
                         .ofType(File.class)
-                        .defaultsTo(new File("spigot.yml"))
+                        .defaultsTo(new File("config/spigot.yml")) // Memegot
                         .describedAs("Yml file");
 
                 this.acceptsAll(asList("paper-dir", "paper-settings-directory"), "Directory for Paper settings")
