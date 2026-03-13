@@ -1,4 +1,4 @@
-package me.memeweft.paper.commands;
+package me.memeweft.paper.commands.admin;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
