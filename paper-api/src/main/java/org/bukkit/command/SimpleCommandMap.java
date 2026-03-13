@@ -40,9 +40,9 @@ public class SimpleCommandMap implements CommandMap {
             }
         };
         this.knownCommands.put("reload", disabledReload);
-        this.knownCommands.put("bukkit:reload", disabledReload);
+        // this.knownCommands.put("bukkit:reload", disabledReload);
         this.knownCommands.put("rl", disabledReload);
-        this.knownCommands.put("bukkit:rl", disabledReload);
+        // this.knownCommands.put("bukkit:rl", disabledReload);
         // disable useless timings command
         // register("bukkit", new co.aikar.timings.TimingsCommand("timings"));
     }
