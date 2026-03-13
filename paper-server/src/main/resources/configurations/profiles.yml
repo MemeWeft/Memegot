@@ -1,0 +1,10 @@
+default:
+  mode: LEGACY
+  values:
+    horizontal: 0.425
+    vertical: 0.4
+    extra-horizontal: 0.375
+    extra-vertical: 0.035
+    vertical-limit: 0.4
+    friction: 2.0
+    stop-sprinting: false

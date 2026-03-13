@@ -605,6 +605,9 @@ public final class CraftServer implements Server {
             CraftDefaultPermissions.registerCorePermissions();
             if (!io.papermc.paper.configuration.GlobalConfiguration.get().misc.loadPermissionsYmlBeforePlugins) this.loadCustomPermissions(); // Paper
             this.syncCommands();
+
+            // Memegot
+            me.memeweft.paper.Memegot.boot(java.nio.file.Path.of("."));
         }
     }
 
@@ -1893,6 +1896,7 @@ public final class CraftServer implements Server {
 
     @Override
     public void shutdown() {
+        me.memeweft.paper.Memegot.shutdown();
         this.console.halt(false);
     }
 
