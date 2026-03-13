@@ -30,12 +30,15 @@ public class SimpleCommandMap implements CommandMap {
         setDefaultCommands();
     }
 
+    // Memegot start
     private void setDefaultCommands() {
         final ReloadCommand reload = new ReloadCommand("reload");
         this.knownCommands.put("bukkit:reload", reload);
         this.knownCommands.put("bukkit:rl", reload);
-        register("bukkit", new co.aikar.timings.TimingsCommand("timings"));
+        // disable useless timings command
+        // register("bukkit", new co.aikar.timings.TimingsCommand("timings"));
     }
+    // Memegot end
 
     public void setFallbackCommands() {
         register("bukkit", new HelpCommand());
