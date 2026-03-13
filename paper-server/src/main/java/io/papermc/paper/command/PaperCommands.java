@@ -37,6 +37,8 @@ public final class PaperCommands {
 
         // Memegot commands
         registerInternalCommand(me.memeweft.paper.commands.MemegotCommand.create(), "memegot", "Memegot server info", List.of(), Set.of());
+        registerInternalCommand(me.memeweft.paper.commands.SetViewDistanceCommand.create(), "memegot", "Set view distance", List.of(), Set.of());
+        registerInternalCommand(me.memeweft.paper.commands.SetSlotsCommand.create(), "memegot", "Set max player slots", List.of(), Set.of());
     }
 
     private static void registerInternalCommand(final LiteralCommandNode<CommandSourceStack> node, final String namespace, final String description, final List<String> aliases, final Set<CommandRegistrationFlag> flags) {
