@@ -51,18 +51,12 @@ public class PaperVersionFetcher implements VersionFetcher {
         return 720000;
     }
 
+    // Memegot start
     @Override
     public Component getVersionMessage() {
-        final Component updateMessage;
-        if (BUILD_INFO.buildNumber().isEmpty() && BUILD_INFO.gitCommit().isEmpty()) {
-            updateMessage = text("You are running a development version without access to version information", color(0xFF5300));
-        } else {
-            updateMessage = getUpdateStatusMessage();
-        }
-        final @Nullable Component history = this.getHistory();
-
-        return history != null ? Component.textOfChildren(updateMessage, Component.newline(), history) : updateMessage;
+        return Component.empty();
     }
+    // Memegot end
 
     public static void getUpdateStatusStartupMessage() {
         int distance = DISTANCE_ERROR;
@@ -106,32 +100,11 @@ public class PaperVersionFetcher implements VersionFetcher {
         }
     }
 
-    private static Component getUpdateStatusMessage() {
-        int distance = DISTANCE_ERROR;
-
-        final OptionalInt buildNumber = PaperVersionFetcher.BUILD_INFO.buildNumber();
-        if (buildNumber.isPresent()) {
-            distance = fetchDistanceFromSiteApi(buildNumber.getAsInt());
-        } else {
-            final Optional<String> gitBranch = PaperVersionFetcher.BUILD_INFO.gitBranch();
-            final Optional<String> gitCommit = PaperVersionFetcher.BUILD_INFO.gitCommit();
-            if (gitBranch.isPresent() && gitCommit.isPresent()) {
-                distance = fetchDistanceFromGitHub(gitBranch.get(), gitCommit.get());
-            }
-        }
-
-        return switch (distance) {
-            case DISTANCE_ERROR -> text("Error obtaining version information", NamedTextColor.YELLOW);
-            case 0 -> text("You are running the latest version", NamedTextColor.GREEN);
-            case DISTANCE_UNKNOWN -> text("Unknown version", NamedTextColor.YELLOW);
-            default -> text("You are " + distance + " version(s) behind", NamedTextColor.YELLOW)
-                .append(Component.newline())
-                .append(text("Download the new version at: ")
-                    .append(text(DOWNLOAD_PAGE, NamedTextColor.GOLD)
-                        .hoverEvent(text("Click to open", NamedTextColor.WHITE))
-                        .clickEvent(ClickEvent.openUrl(DOWNLOAD_PAGE))));
-        };
-    }
+    // // Memegot start
+    // private static Component getUpdateStatusMessage() {
+    //     return text("This is a custom fork (" + me.memeweft.paper.MemeAPI.NAME + " " + me.memeweft.paper.MemeAPI.VERSION + ")", NamedTextColor.GOLD);
+    // }
+    // // Memegot end
 
     private record MinecraftVersionFetcher(String latestVersion, int distance) {}
 

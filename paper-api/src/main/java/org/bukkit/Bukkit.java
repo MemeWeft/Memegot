@@ -120,12 +120,14 @@ public final class Bukkit {
       *
       * @return message describing the version server is running
       */
+    // Memegot start
     @NotNull
     public static String getVersionMessage() {
-        final io.papermc.paper.ServerBuildInfo version = io.papermc.paper.ServerBuildInfo.buildInfo();
-        return "This server is running " + getName() + " version " + version.asString(io.papermc.paper.ServerBuildInfo.StringRepresentation.VERSION_FULL) + " (Implementing API version " + getBukkitVersion() + ")";
-        // Paper end
+        return "\nThis server is running §c" + me.memeweft.paper.MemeAPI.NAME
+            + " §rversion " + me.memeweft.paper.MemeAPI.VERSION
+            + " (Implementing API version " + getBukkitVersion() + ")\n";
     }
+    // Memegot end
 
     /**
      * Gets the name of this server implementation.
