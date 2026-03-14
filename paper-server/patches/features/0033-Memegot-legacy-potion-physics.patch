@@ -1,0 +1,90 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MemeWeft <woutervanderploeg04@gmail.com>
+Date: Sat, 14 Mar 2026 11:02:20 +0100
+Subject: [PATCH] Memegot - legacy potion physics
+
+
+diff --git a/net/minecraft/world/entity/projectile/throwableitemprojectile/AbstractThrownPotion.java b/net/minecraft/world/entity/projectile/throwableitemprojectile/AbstractThrownPotion.java
+index 9e4fc50053be66584612b97d3ef103e502195664..3c1a56566824777b883c772c2801ca01c5d5da96 100644
+--- a/net/minecraft/world/entity/projectile/throwableitemprojectile/AbstractThrownPotion.java
++++ b/net/minecraft/world/entity/projectile/throwableitemprojectile/AbstractThrownPotion.java
+@@ -40,6 +40,30 @@ public abstract class AbstractThrownPotion extends ThrowableItemProjectile {
+         super(type, x, y, z, level, item);
+     }
+ 
++    // Memegot start - legacy potion self-collision delay
++    public int legacyOwnerTicks = -1;
++    public int legacyCollisionThreshold = 2;
++
++    @Override
++    protected void checkLeftOwner() {
++        if (this.legacyOwnerTicks >= 0 && this.legacyOwnerTicks < this.legacyCollisionThreshold) {
++            return; // suppress vanilla check during delay
++        }
++        super.checkLeftOwner();
++    }
++
++    @Override
++    public void tick() {
++        if (this.legacyOwnerTicks >= 0) {
++            this.legacyOwnerTicks++;
++            if (this.legacyOwnerTicks >= this.legacyCollisionThreshold) {
++                this.leftOwner = true;
++            }
++        }
++        super.tick();
++    }
++    // Memegot end
++
+     @Override
+     protected double getDefaultGravity() {
+         return 0.05;
+diff --git a/net/minecraft/world/item/ThrowablePotionItem.java b/net/minecraft/world/item/ThrowablePotionItem.java
+index 2707c2e3c6e32bb7c497808dceb34690e27a567a..5e1caef05a93e23616ce82d0daf5c2c38031cd21 100644
+--- a/net/minecraft/world/item/ThrowablePotionItem.java
++++ b/net/minecraft/world/item/ThrowablePotionItem.java
+@@ -25,6 +25,30 @@ public abstract class ThrowablePotionItem extends PotionItem implements Projecti
+         if (level instanceof ServerLevel serverLevel) {
+             // Paper start - PlayerLaunchProjectileEvent
+             final Projectile.Delayed<AbstractThrownPotion> thrownPotion = Projectile.spawnProjectileFromRotationDelayed(this::createPotion, serverLevel, itemInHand, player, -20.0F, PROJECTILE_SHOOT_POWER, 1.0F);
++
++            // Memegot start - legacy potion physics
++            if (me.memeweft.paper.Memegot.ready()
++                && me.memeweft.paper.Memegot.potionEngine().isLegacy(player.getUUID())) {
++                me.memeweft.paper.config.PotionConfig cfg = me.memeweft.paper.Memegot.gameConfig().getPotionPhysics();
++
++                double[] vel = me.memeweft.paper.module.potions.PotionCalculation.computeVelocity(
++                    player.getYRot(), player.getXRot(),
++                    0, 0,
++                    true,
++                    cfg
++                );
++                double[] pos = me.memeweft.paper.module.potions.PotionCalculation.computeSpawnPositionBehind(
++                    player.getX(), player.getY(), player.getZ(),
++                    player.getEyeHeight(), player.getYRot(), 0.3
++                );
++
++                thrownPotion.projectile().setPos(pos[0], pos[1], pos[2]);
++                thrownPotion.projectile().setDeltaMovement(vel[0], vel[1], vel[2]);
++                thrownPotion.projectile().leftOwner = true;
++                thrownPotion.projectile().legacyOwnerTicks = 0;
++            }
++            // Memegot end
++
+             com.destroystokyo.paper.event.player.PlayerLaunchProjectileEvent event = new com.destroystokyo.paper.event.player.PlayerLaunchProjectileEvent((org.bukkit.entity.Player) player.getBukkitEntity(), org.bukkit.craftbukkit.inventory.CraftItemStack.asCraftMirror(itemInHand), (org.bukkit.entity.Projectile) thrownPotion.projectile().getBukkitEntity());
+             if (event.callEvent() && thrownPotion.attemptSpawn()) {
+                 if (event.shouldConsume()) {
+diff --git a/net/minecraft/world/item/crafting/RecipeManager.java b/net/minecraft/world/item/crafting/RecipeManager.java
+index 4e0b0d630e18bde916a07889bcaf0e7accf064ca..1d8f59c683521861220edafb79dad1f95fa9b638 100644
+--- a/net/minecraft/world/item/crafting/RecipeManager.java
++++ b/net/minecraft/world/item/crafting/RecipeManager.java
+@@ -84,7 +84,8 @@ public class RecipeManager extends SimplePreparableReloadListener<RecipeMap> imp
+     @Override
+     protected void apply(RecipeMap object, ResourceManager resourceManager, ProfilerFiller profiler) {
+         this.recipes = object;
+-        LOGGER.info("Loaded {} recipes", object.values().size());
++        // Memegot: removed logging for recipes
++        // LOGGER.info("Loaded {} recipes", object.values().size());
+     }
+ 
+     // CraftBukkit start
