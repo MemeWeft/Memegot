@@ -9,6 +9,7 @@ public final class PotionCalculation {
     public static double[] computeVelocity(
         float yaw, float pitch,
         double playerVX, double playerVZ,
+        boolean inheritVelocity,
         PotionConfig cfg
     ) {
         float adjustedPitch = pitch + cfg.verticalOffset();
@@ -28,7 +29,7 @@ public final class PotionCalculation {
             dz *= speed;
         }
 
-        if (cfg.inheritPlayerVelocity()) {
+        if (inheritVelocity && cfg.inheritPlayerVelocity()) {
             dx += playerVX;
             dz += playerVZ;
         }
@@ -44,6 +45,19 @@ public final class PotionCalculation {
             playerX,
             playerY + eyeHeight - 0.1,
             playerZ
+        };
+    }
+
+    public static double[] computeSpawnPositionBehind(
+        double playerX, double playerY, double playerZ,
+        double eyeHeight, float yaw, double horizontalSpeed
+    ) {
+        double offset = 0.5 + horizontalSpeed * 2.0;
+        double yawRad = Math.toRadians(yaw);
+        return new double[]{
+            playerX + Math.sin(yawRad) * offset,
+            playerY + eyeHeight - 0.1,
+            playerZ - Math.cos(yawRad) * offset
         };
     }
 }
