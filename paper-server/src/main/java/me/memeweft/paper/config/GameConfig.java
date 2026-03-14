@@ -16,6 +16,7 @@ public final class GameConfig {
     private boolean mobAi = false;
     private boolean playerStats = false;
     private boolean blockUpdates = false;
+    private PotionConfig potionPhysics = PotionConfig.legacy17();
 
     public GameConfig(Path configDir) {
         this.file = configDir.resolve("game.yml");
@@ -29,6 +30,13 @@ public final class GameConfig {
         mobAi = config.getBoolean("mob-ai", false);
         playerStats = config.getBoolean("player-stats", false);
         blockUpdates = config.getBoolean("block-updates", false);
+        potionPhysics = PotionConfig.builder()
+            .throwSpeed(config.getDouble("potions.throw-speed", 0.5))
+            .verticalOffset((float) config.getDouble("potions.vertical-offset", -20.0))
+            .inheritPlayerVelocity(config.getBoolean("potions.inherit-player-velocity", true))
+            .gravity(config.getDouble("potions.gravity", 0.03))
+            .drag(config.getDouble("potions.drag", 0.99))
+            .build();
     }
 
     public CombatMode getGlobalMode() {
@@ -45,6 +53,10 @@ public final class GameConfig {
 
     public boolean isBlockUpdates() {
         return blockUpdates;
+    }
+
+    public PotionConfig getPotionPhysics() {
+        return potionPhysics;
     }
 
     private void ensureExists(String resource) {

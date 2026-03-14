@@ -4,8 +4,10 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandRegistrationFlag;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import me.memeweft.paper.commands.admin.MemegotCommand;
+import me.memeweft.paper.commands.admin.PotionCommand;
 import me.memeweft.paper.commands.admin.SetSlotsCommand;
 import me.memeweft.paper.commands.admin.SetViewDistanceCommand;
+import me.memeweft.paper.commands.user.PingCommand;
 import net.minecraft.server.MinecraftServer;
 import org.bukkit.command.Command;
 
@@ -42,8 +44,9 @@ public final class PaperCommands {
         registerInternalCommand(MemegotCommand.create(), "memegot", "Memegot server info", List.of(), Set.of());
         registerInternalCommand(SetViewDistanceCommand.create(), "memegot", "Set view distance", List.of(), Set.of());
         registerInternalCommand(SetSlotsCommand.create(), "memegot", "Set max player slots", List.of(), Set.of());
+        registerInternalCommand(PotionCommand.create(), "memegot", "Set potion physics mode", List.of(), Set.of());
 
-        registerInternalCommand(me.memeweft.paper.commands.user.PingCommand.create(), "memegot", "Show player ping", List.of(), Set.of());
+        registerInternalCommand(PingCommand.create(), "memegot", "Show player ping", List.of(), Set.of());
     }
 
     private static void registerInternalCommand(final LiteralCommandNode<CommandSourceStack> node, final String namespace, final String description, final List<String> aliases, final Set<CommandRegistrationFlag> flags) {

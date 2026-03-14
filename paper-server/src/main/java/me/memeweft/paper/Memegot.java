@@ -2,6 +2,7 @@ package me.memeweft.paper;
 
 import me.memeweft.paper.config.GameConfig;
 import me.memeweft.paper.config.ProfilesConfig;
+import me.memeweft.paper.module.potions.PotionEngine;
 
 import java.nio.file.Path;
 
@@ -12,6 +13,7 @@ public final class Memegot {
     private static boolean initialized;
     private static GameConfig gameConfig;
     private static ProfilesConfig profilesConfig;
+    private static PotionEngine potionEngine;
 
     public static void boot(Path gameFolder) {
         if (initialized) return;
@@ -24,6 +26,8 @@ public final class Memegot {
 
         profilesConfig = new ProfilesConfig(configDir);
         profilesConfig.load();
+
+        potionEngine = new PotionEngine();
     }
 
     public static void shutdown() {
@@ -31,6 +35,7 @@ public final class Memegot {
         initialized = false;
         gameConfig = null;
         profilesConfig = null;
+        potionEngine = null;
     }
 
     public static GameConfig gameConfig() {
@@ -39,6 +44,10 @@ public final class Memegot {
 
     public static ProfilesConfig profilesConfig() {
         return profilesConfig;
+    }
+
+    public static PotionEngine potionEngine() {
+        return potionEngine;
     }
 
     public static boolean ready() {

@@ -2,3 +2,10 @@ global-mode: MODERN
 mob-ai: false
 player-stats: false
 block-updates: false
+
+potions:
+  throw-speed: 0.5
+  vertical-offset: -20.0
+  inherit-player-velocity: true
+  gravity: 0.03
+  drag: 0.99
