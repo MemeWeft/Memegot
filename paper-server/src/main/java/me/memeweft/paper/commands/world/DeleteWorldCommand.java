@@ -5,6 +5,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import me.memeweft.paper.utility.BroadcastAction;
 import me.memeweft.paper.world.WorldService;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -12,11 +13,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Comparator;
 
 public final class DeleteWorldCommand {
 
@@ -64,19 +60,9 @@ public final class DeleteWorldCommand {
                         p.teleport(defaultWorld.getSpawnLocation());
                     }
 
-                    Path worldFolder = target.getWorldFolder().toPath();
-                    WorldService.deleteWorld(target);
+                    BroadcastAction.toOps(sender, BroadcastAction.adminLog(sender, "Started world deletion for '" + worldName + "'"));
 
-                    try {
-                        Files.walk(worldFolder)
-                            .sorted(Comparator.reverseOrder())
-                            .forEach(path -> {
-                                try { Files.delete(path); } catch (IOException ignored) {}
-                            });
-                    } catch (IOException e) {
-                        sender.sendMessage(Component.text("Error: Failed to delete world files.", NamedTextColor.RED));
-                        return Command.SINGLE_SUCCESS;
-                    }
+                    WorldService.deleteWorld(target);
 
                     sender.sendMessage(
                         Component.text("You've deleted world ", NamedTextColor.WHITE)

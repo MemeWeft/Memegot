@@ -12,6 +12,7 @@ public class World {
 
     public static void postBoot() {
         WorldHandler.loadAll(registry);
+        WorldHandler.loadSpawn();
     }
 
     public static void shutdown() {

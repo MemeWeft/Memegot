@@ -8,6 +8,14 @@ public class GameConfig {
     // MongoDB
     public String mongoUri;
 
+    // Spawn
+    public String spawnWorld = "";
+    public double spawnX;
+    public double spawnY;
+    public double spawnZ;
+    public float spawnYaw;
+    public float spawnPitch;
+    
     // World
     public boolean voidWorld;
     public boolean disableNether;

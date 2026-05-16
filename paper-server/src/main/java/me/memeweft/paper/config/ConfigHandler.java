@@ -41,6 +41,19 @@ public class ConfigHandler {
         yaml.addDefault("memegot.mongo.uri", "mongodb://192.168.2.18:27017");
         config.mongoUri = yaml.getString("memegot.mongo.uri");
 
+        yaml.addDefault("memegot.spawn.world", "");
+        config.spawnWorld = yaml.getString("memegot.spawn.world", "");
+        yaml.addDefault("memegot.spawn.x", 0.0);
+        config.spawnX = yaml.getDouble("memegot.spawn.x");
+        yaml.addDefault("memegot.spawn.y", 64.0);
+        config.spawnY = yaml.getDouble("memegot.spawn.y");
+        yaml.addDefault("memegot.spawn.z", 0.0);
+        config.spawnZ = yaml.getDouble("memegot.spawn.z");
+        yaml.addDefault("memegot.spawn.yaw", 0.0);
+        config.spawnYaw = (float) yaml.getDouble("memegot.spawn.yaw");
+        yaml.addDefault("memegot.spawn.pitch", 0.0);
+        config.spawnPitch = (float) yaml.getDouble("memegot.spawn.pitch");
+
         yaml.addDefault("memegot.world.void", true);
         config.voidWorld = yaml.getBoolean("memegot.world.void");
         yaml.addDefault("memegot.world.disable-nether", true);
@@ -81,5 +94,27 @@ public class ConfigHandler {
         } catch (IOException e) {
             throw new RuntimeException("Could not save " + file.getName(), e);
         }
+    }
+
+    static void saveSpawn(org.bukkit.Location location) {
+        YamlConfiguration yaml = YamlConfiguration.loadConfiguration(GAME_CONFIG_FILE);
+        yaml.set("memegot.spawn.world",  location.getWorld().getName());
+        yaml.set("memegot.spawn.x",      location.getX());
+        yaml.set("memegot.spawn.y",      location.getY());
+        yaml.set("memegot.spawn.z",      location.getZ());
+        yaml.set("memegot.spawn.yaw",    (double) location.getYaw());
+        yaml.set("memegot.spawn.pitch",  (double) location.getPitch());
+        save(yaml, GAME_CONFIG_FILE);
+    }
+
+    static void setSpawn(org.bukkit.Location location) {
+        GameConfig config = Config.getGameConfig();
+        config.spawnWorld = location.getWorld().getName();
+        config.spawnX     = location.getX();
+        config.spawnY     = location.getY();
+        config.spawnZ     = location.getZ();
+        config.spawnYaw   = location.getYaw();
+        config.spawnPitch = location.getPitch();
+        saveSpawn(location);
     }
 }

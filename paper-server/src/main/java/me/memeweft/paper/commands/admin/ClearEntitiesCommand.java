@@ -4,6 +4,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import me.memeweft.paper.utility.BroadcastAction;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.CommandSender;
@@ -31,7 +32,15 @@ public final class ClearEntitiesCommand {
                     .filter(e -> e.getType() != EntityType.PLAYER)
                     .toList();
 
+                if (entities.isEmpty()) {
+                    sender.sendMessage(Component.text("Error: There are no entities to clear.", NamedTextColor.RED));
+                    return Command.SINGLE_SUCCESS;
+                }
+
                 entities.forEach(Entity::remove);
+
+                BroadcastAction.toOps(sender, BroadcastAction.adminLog(sender,
+                    "Cleared " + entities.size() + " entities in '" + player.getWorld().getName() + "'"));
 
                 sender.sendMessage(
                     Component.text("You've cleared ", NamedTextColor.WHITE)

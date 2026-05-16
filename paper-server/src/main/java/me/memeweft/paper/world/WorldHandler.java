@@ -1,5 +1,7 @@
 package me.memeweft.paper.world;
 
+import me.memeweft.paper.config.ConfigService;
+import me.memeweft.paper.config.impl.GameConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.WorldCreator;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -11,6 +13,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class WorldHandler {
 
@@ -27,12 +30,26 @@ public class WorldHandler {
         }
     }
 
-    static void register(String name) {
-        Bukkit.createWorld(new WorldCreator(name));
-        List<String> updated = new ArrayList<>(World.getRegistry());
-        updated.add(name);
-        World.setRegistry(updated);
-        save(updated);
+    static CompletableFuture<org.bukkit.World> register(String name) {
+        CompletableFuture<org.bukkit.World> future = new CompletableFuture<>();
+
+        net.minecraft.server.MinecraftServer.getServer().execute(() -> {
+            org.bukkit.World world = Bukkit.createWorld(new WorldCreator(name));
+
+            if (world == null) {
+                future.completeExceptionally(new RuntimeException("World creation returned null"));
+                return;
+            }
+
+            List<String> updated = new ArrayList<>(World.getRegistry());
+            updated.add(name);
+            World.setRegistry(updated);
+            save(updated);
+
+            future.complete(world);
+        });
+
+        return future;
     }
 
     static void unregister(org.bukkit.World world) {
@@ -73,6 +90,23 @@ public class WorldHandler {
                 file.createNewFile();
             } catch (IOException e) {
                 throw new RuntimeException("Could not create " + file.getName(), e);
+            }
+        }
+    }
+
+    static void loadSpawn() {
+        GameConfig config = ConfigService.getGameConfig();
+        if (config.spawnWorld == null || config.spawnWorld.isEmpty()) return;
+
+        org.bukkit.World world = Bukkit.getWorld(config.spawnWorld);
+        if (world == null) return;
+
+        int chunkX = ((int) config.spawnX) >> 4;
+        int chunkZ = ((int) config.spawnZ) >> 4;
+
+        for (int x = chunkX - 1; x <= chunkX + 1; x++) {
+            for (int z = chunkZ - 1; z <= chunkZ + 1; z++) {
+                world.setChunkForceLoaded(x, z, true);
             }
         }
     }

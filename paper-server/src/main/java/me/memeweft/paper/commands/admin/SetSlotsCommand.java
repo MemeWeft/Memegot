@@ -5,6 +5,7 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import me.memeweft.paper.utility.BroadcastAction;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -28,7 +29,19 @@ public final class SetSlotsCommand {
                     CommandSender sender = context.getSource().getSender();
                     int slots = IntegerArgumentType.getInteger(context, "slots");
 
+                    if (slots == Bukkit.getMaxPlayers()) {
+                        sender.sendMessage(
+                            Component.text("Error: Max player count is already at ", NamedTextColor.RED)
+                                .append(Component.text(String.valueOf(slots), NamedTextColor.WHITE))
+                                .append(Component.text(".", NamedTextColor.RED))
+                        );
+                        return Command.SINGLE_SUCCESS;
+                    }
+
                     Bukkit.setMaxPlayers(slots);
+
+                    BroadcastAction.toOps(sender, BroadcastAction.adminLog(sender,
+                        "Set max players to " + slots));
 
                     sender.sendMessage(Component.text("Manually set max players to ", NamedTextColor.WHITE)
                         .append(Component.text(String.valueOf(slots), NamedTextColor.RED))

@@ -5,6 +5,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import me.memeweft.paper.utility.BroadcastAction;
 import me.memeweft.paper.world.WorldService;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -38,13 +39,24 @@ public final class CreateWorldCommand {
                         return Command.SINGLE_SUCCESS;
                     }
 
-                    WorldService.createWorld(name);
-
                     sender.sendMessage(
-                        Component.text("You've created world ", NamedTextColor.WHITE)
-                            .append(Component.text(name, NamedTextColor.RED))
-                            .append(Component.text(" successfully.", NamedTextColor.WHITE))
+                        Component.text("Creating world ", NamedTextColor.GRAY)
+                            .append(Component.text(name, NamedTextColor.WHITE))
+                            .append(Component.text("...", NamedTextColor.GRAY))
                     );
+
+                    BroadcastAction.toOps(sender, BroadcastAction.adminLog(sender, "Started world creation for '" + name + "'"));
+
+                    WorldService.createWorld(name)
+                        .thenAccept(world -> sender.sendMessage(
+                            Component.text("You've created world ", NamedTextColor.WHITE)
+                                .append(Component.text(name, NamedTextColor.RED))
+                                .append(Component.text(" successfully.", NamedTextColor.WHITE))
+                        ))
+                        .exceptionally(ex -> {
+                            sender.sendMessage(Component.text("Error: World creation failed.", NamedTextColor.RED));
+                            return null;
+                        });
 
                     return Command.SINGLE_SUCCESS;
                 }))
