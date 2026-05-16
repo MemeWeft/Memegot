@@ -7,7 +7,6 @@ public class GameConfig {
 
     // MongoDB
     public String mongoUri;
-    public String mongoDatabase;
 
     // World
     public boolean voidWorld;

@@ -38,10 +38,8 @@ public class ConfigHandler {
         yaml.addDefault("memegot.mob-ai", true);
         config.mobAi = yaml.getBoolean("memegot.mob-ai");
 
-        yaml.addDefault("memegot.mongo.uri", "mongodb://localhost:27017");
+        yaml.addDefault("memegot.mongo.uri", "mongodb://192.168.2.18:27017");
         config.mongoUri = yaml.getString("memegot.mongo.uri");
-        yaml.addDefault("memegot.mongo.database", "memegot");
-        config.mongoDatabase = yaml.getString("memegot.mongo.database");
 
         yaml.addDefault("memegot.world.void", true);
         config.voidWorld = yaml.getBoolean("memegot.world.void");
