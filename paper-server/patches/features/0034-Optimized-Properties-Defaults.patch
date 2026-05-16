@@ -1,0 +1,70 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MemeWeft <165016734+MemeWeft@users.noreply.github.com>
+Date: Sat, 16 May 2026 11:07:14 +0200
+Subject: [PATCH] Optimized-Properties-Defaults
+
+
+diff --git a/net/minecraft/server/dedicated/DedicatedServerProperties.java b/net/minecraft/server/dedicated/DedicatedServerProperties.java
+index bbd8f68d166ebd0370f4b39362468fdc7d70f7f0..74a31c00350c02deec9b64394dea089162395a76 100644
+--- a/net/minecraft/server/dedicated/DedicatedServerProperties.java
++++ b/net/minecraft/server/dedicated/DedicatedServerProperties.java
+@@ -57,14 +57,14 @@ public class DedicatedServerProperties extends Settings<DedicatedServerPropertie
+     public final boolean onlineMode = this.get("online-mode", true);
+     public final boolean preventProxyConnections = this.get("prevent-proxy-connections", false);
+     public final String serverIp = this.get("server-ip", "");
+-    public final Settings<DedicatedServerProperties>.MutableValue<Boolean> allowFlight = this.getMutable("allow-flight", false);
+-    public final Settings<DedicatedServerProperties>.MutableValue<String> motd = this.getMutable("motd", "A Minecraft Server");
++    public final Settings<DedicatedServerProperties>.MutableValue<Boolean> allowFlight = this.getMutable("allow-flight", true); // Memegot - allow flight since we're handling it on our own
++    public final Settings<DedicatedServerProperties>.MutableValue<String> motd = this.getMutable("motd", "                   §fMemeWeft.xyz §c[1.21.11]§r\n                         Game Server"); // Memegot - custom motd
+     public final boolean codeOfConduct = this.get("enable-code-of-conduct", false);
+     public final String bugReportLink = this.get("bug-report-link", "");
+     public final Settings<DedicatedServerProperties>.MutableValue<Boolean> forceGameMode = this.getMutable("force-gamemode", false);
+     public final Settings<DedicatedServerProperties>.MutableValue<Boolean> enforceWhitelist = this.getMutable("enforce-whitelist", false);
+     public final Settings<DedicatedServerProperties>.MutableValue<Difficulty> difficulty = this.getMutable(
+-        "difficulty", dispatchNumberOrString(Difficulty::byId, Difficulty::byName), Difficulty::getKey, Difficulty.EASY
++        "difficulty", dispatchNumberOrString(Difficulty::byId, Difficulty::byName), Difficulty::getKey, Difficulty.NORMAL // Memegot - set difficulty to normal
+     );
+     public final Settings<DedicatedServerProperties>.MutableValue<GameType> gameMode = this.getMutable(
+         "gamemode", dispatchNumberOrString(GameType::byId, GameType::byName), GameType::getName, GameType.SURVIVAL
+@@ -87,7 +87,7 @@ public class DedicatedServerProperties extends Settings<DedicatedServerPropertie
+     public final String rconPassword = this.get("rcon.password", "");
+     public final boolean hardcore = this.get("hardcore", false);
+     public final boolean useNativeTransport = this.get("use-native-transport", true);
+-    public final Settings<DedicatedServerProperties>.MutableValue<Integer> spawnProtection = this.getMutable("spawn-protection", 16);
++    public final Settings<DedicatedServerProperties>.MutableValue<Integer> spawnProtection = this.getMutable("spawn-protection", 0); // Memegot - disabled spawn protection
+     public final Settings<DedicatedServerProperties>.MutableValue<LevelBasedPermissionSet> opPermissions = this.getMutable(
+         "op-permission-level", DedicatedServerProperties::deserializePermission, DedicatedServerProperties::serializePermission, LevelBasedPermissionSet.OWNER
+     );
+@@ -97,17 +97,17 @@ public class DedicatedServerProperties extends Settings<DedicatedServerPropertie
+         DedicatedServerProperties::serializePermission,
+         LevelBasedPermissionSet.GAMEMASTER
+     );
+-    public final long maxTickTime = this.get("max-tick-time", TimeUnit.MINUTES.toMillis(1L));
++    public final long maxTickTime = this.get("max-tick-time", -1L); // Memegot - set max tick time to -1
+     public final int maxChainedNeighborUpdates = this.get("max-chained-neighbor-updates", 1000000);
+     public final int rateLimitPacketsPerSecond = this.get("rate-limit", 0);
+-    public final Settings<DedicatedServerProperties>.MutableValue<Integer> viewDistance = this.getMutable("view-distance", 10);
+-    public final Settings<DedicatedServerProperties>.MutableValue<Integer> simulationDistance = this.getMutable("simulation-distance", 10);
+-    public final Settings<DedicatedServerProperties>.MutableValue<Integer> maxPlayers = this.getMutable("max-players", 20);
+-    public final int networkCompressionThreshold = this.get("network-compression-threshold", 256);
++    public final Settings<DedicatedServerProperties>.MutableValue<Integer> viewDistance = this.getMutable("view-distance", 8); // Memegot - set view dist to 8
++    public final Settings<DedicatedServerProperties>.MutableValue<Integer> simulationDistance = this.getMutable("simulation-distance", 5); // Memegot - set sim dist to 5
++    public final Settings<DedicatedServerProperties>.MutableValue<Integer> maxPlayers = this.getMutable("max-players", 99); // Memegot - set max players to 99
++    public final int networkCompressionThreshold = this.get("network-compression-threshold", 512); // Memegot - set network compression threshold to 512
+     public final boolean broadcastRconToOps = this.get("broadcast-rcon-to-ops", true);
+     public final boolean broadcastConsoleToOps = this.get("broadcast-console-to-ops", true);
+     public final int maxWorldSize = this.get("max-world-size", property -> Mth.clamp(property, 1, 29999984), 29999984);
+-    public final boolean syncChunkWrites = this.get("sync-chunk-writes", true) && Boolean.getBoolean("Paper.enable-sync-chunk-writes"); // Paper - Hide sync chunk writes behind flag
++    public final boolean syncChunkWrites = this.get("sync-chunk-writes", false) && Boolean.getBoolean("Paper.enable-sync-chunk-writes"); // Memegot - disabled sync chunk writes // Paper - Hide sync chunk writes behind flag
+     public final String regionFileComression = this.get("region-file-compression", "deflate");
+     public final boolean enableJmxMonitoring = this.get("enable-jmx-monitoring", false);
+     public final Settings<DedicatedServerProperties>.MutableValue<Boolean> enableStatus = this.getMutable("enable-status", true);
+@@ -140,7 +140,7 @@ public class DedicatedServerProperties extends Settings<DedicatedServerPropertie
+         this.worldOptions = new WorldOptions(l, flag, false);
+         this.worldDimensionData = new DedicatedServerProperties.WorldDimensionData(
+             this.get("generator-settings", property -> GsonHelper.parse(!property.isEmpty() ? property : "{}"), new JsonObject()),
+-            this.get("level-type", property -> property.toLowerCase(Locale.ROOT), WorldPresets.NORMAL.identifier().toString())
++            this.get("level-type", property -> property.toLowerCase(Locale.ROOT), WorldPresets.FLAT.identifier().toString()) // Memegot - set default worldgen to FLAT
+         );
+         this.serverResourcePackInfo = getServerPackInfo(
+             this.get("resource-pack-id", ""),
