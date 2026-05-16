@@ -1,0 +1,49 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MemeWeft <165016734+MemeWeft@users.noreply.github.com>
+Date: Sat, 16 May 2026 11:34:52 +0200
+Subject: [PATCH] Move-Player-Files-To-Player-Folder
+
+
+diff --git a/net/minecraft/server/Main.java b/net/minecraft/server/Main.java
+index 9216e85e74bb0121c72665f155b07cf9a37f430a..978d7a0ec86f6af0300509b38654e98e90869922 100644
+--- a/net/minecraft/server/Main.java
++++ b/net/minecraft/server/Main.java
+@@ -165,14 +165,17 @@ public class Main {
+             org.spigotmc.SpigotConfig.disabledAdvancements = spigotConfiguration.getStringList("advancements.disabled"); // Paper - fix SPIGOT-5885, must be set early in init
+ 
+             // Paper start - fix SPIGOT-5824
++            // Memegot start - Change usercache location to players/
++            new File("players").mkdirs();
+             File file;
+-            File userCacheFile = new File(Services.USERID_CACHE_FILE);
++            File userCacheFile = new File("players/usercache.json");
+             if (optionSet.has("universe")) {
+                 file = (File) optionSet.valueOf("universe"); // CraftBukkit
+-                userCacheFile = new File(file, Services.USERID_CACHE_FILE);
++                userCacheFile = new File(file, "players/usercache.json");
+             } else {
+                 file = new File(bukkitConfiguration.getString("settings.world-container", "."));
+             }
++            // Memegot end
+             // Paper end - fix SPIGOT-5824
+             Services services = Services.create(new com.destroystokyo.paper.profile.PaperAuthenticationService(Proxy.NO_PROXY), file, userCacheFile, optionSet); // Paper - pass OptionSet to load paper config files; override authentication service; fix world-container
+             // CraftBukkit start
+diff --git a/net/minecraft/server/players/PlayerList.java b/net/minecraft/server/players/PlayerList.java
+index 989ac565c47a70c7947cb7315d0f5c2cfecd0363..7b05c97eaa9d8ad282119ceebcac6c2d1452425a 100644
+--- a/net/minecraft/server/players/PlayerList.java
++++ b/net/minecraft/server/players/PlayerList.java
+@@ -104,10 +104,10 @@ import org.jspecify.annotations.Nullable;
+ import org.slf4j.Logger;
+ 
+ public abstract class PlayerList {
+-    public static final File USERBANLIST_FILE = new File("banned-players.json");
+-    public static final File IPBANLIST_FILE = new File("banned-ips.json");
+-    public static final File OPLIST_FILE = new File("ops.json");
+-    public static final File WHITELIST_FILE = new File("whitelist.json");
++    public static final File USERBANLIST_FILE = new File("players/banned-players.json");
++    public static final File IPBANLIST_FILE = new File("players/banned-ips.json");
++    public static final File OPLIST_FILE = new File("players/ops.json");
++    public static final File WHITELIST_FILE = new File("players/whitelist.json");
+     public static final Component CHAT_FILTERED_FULL = Component.translatable("chat.filtered_full");
+     public static final Component DUPLICATE_LOGIN_DISCONNECT_MESSAGE = Component.translatable("multiplayer.disconnect.duplicate_login");
+     private static final Logger LOGGER = LogUtils.getLogger();
