@@ -36,6 +36,7 @@ public final class PaperCommands {
         registerInternalCommand(PaperPluginsCommand.create(), "bukkit", PaperPluginsCommand.DESCRIPTION, List.of("pl"), Set.of());
 
         // Memegot commands
+        registerInternalCommand(me.memeweft.paper.commands.user.PingCommand.create(), "server", "View your or another player's ping", List.of(), Set.of());
         registerInternalCommand(me.memeweft.paper.commands.user.VersionCommand.create(), "server", "View server version", List.of("ver", "about"), Set.of());
         registerInternalCommand(me.memeweft.paper.commands.admin.SetViewDistanceCommand.create(), "server", "Set view distance for all worlds", List.of(), Set.of());
         registerInternalCommand(me.memeweft.paper.commands.admin.SetSlotsCommand.create(), "server", "Set max player slots", List.of(), Set.of());
