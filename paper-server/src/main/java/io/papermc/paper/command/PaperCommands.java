@@ -32,8 +32,12 @@ public final class PaperCommands {
 
     public static void registerCommands() {
         // Paper commands go here
-        registerInternalCommand(PaperVersionCommand.create(), "bukkit", PaperVersionCommand.DESCRIPTION, List.of("ver", "about"), Set.of());
+        // registerInternalCommand(PaperVersionCommand.create(), "bukkit", PaperVersionCommand.DESCRIPTION, List.of("ver", "about"), Set.of());
         registerInternalCommand(PaperPluginsCommand.create(), "bukkit", PaperPluginsCommand.DESCRIPTION, List.of("pl"), Set.of());
+
+        // Memegot commands
+        registerInternalCommand(me.memeweft.paper.commands.admin.SetViewDistanceCommand.create(), "server", "Set view distance for all worlds", List.of(), Set.of());
+        registerInternalCommand(me.memeweft.paper.commands.admin.SetSlotsCommand.create(), "server", "Set max player slots", List.of(), Set.of());
     }
 
     private static void registerInternalCommand(final LiteralCommandNode<CommandSourceStack> node, final String namespace, final String description, final List<String> aliases, final Set<CommandRegistrationFlag> flags) {
