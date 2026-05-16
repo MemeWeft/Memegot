@@ -1,0 +1,18 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MemeWeft <165016734+MemeWeft@users.noreply.github.com>
+Date: Sat, 16 May 2026 15:24:06 +0200
+Subject: [PATCH] Post Boot World Initialisation
+
+
+diff --git a/net/minecraft/server/dedicated/DedicatedServer.java b/net/minecraft/server/dedicated/DedicatedServer.java
+index 4e38e9d131f00feb5ecdaada55d2903447044add..c50670350e06dbe51d5617aeb8d23b34f0f9a59c 100644
+--- a/net/minecraft/server/dedicated/DedicatedServer.java
++++ b/net/minecraft/server/dedicated/DedicatedServer.java
+@@ -392,6 +392,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+             }
+ 
+             this.notificationManager().serverStarted();
++            me.memeweft.paper.Memegot.postBoot(); // Memegot - post boot
+             return true;
+         }
+     }

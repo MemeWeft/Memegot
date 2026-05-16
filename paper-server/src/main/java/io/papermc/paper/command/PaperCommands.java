@@ -37,9 +37,17 @@ public final class PaperCommands {
 
         // Memegot commands
         registerInternalCommand(me.memeweft.paper.commands.user.PingCommand.create(), "server", "View your or another player's ping", List.of(), Set.of());
+        registerInternalCommand(me.memeweft.paper.commands.user.TpsCommand.create(), "server", "View TPS and MSPT", List.of(), Set.of());
         registerInternalCommand(me.memeweft.paper.commands.user.VersionCommand.create(), "server", "View server version", List.of("ver", "about"), Set.of());
+        
         registerInternalCommand(me.memeweft.paper.commands.admin.SetViewDistanceCommand.create(), "server", "Set view distance for all worlds", List.of(), Set.of());
         registerInternalCommand(me.memeweft.paper.commands.admin.SetSlotsCommand.create(), "server", "Set max player slots", List.of(), Set.of());
+        registerInternalCommand(me.memeweft.paper.commands.admin.ClearEntitiesCommand.create(), "server", "Clear all non-player entities in the current world", List.of(), Set.of());
+
+        registerInternalCommand(me.memeweft.paper.commands.world.CreateWorldCommand.create(), "server", "Create a new world", List.of(), Set.of());
+        registerInternalCommand(me.memeweft.paper.commands.world.DeleteWorldCommand.create(), "server", "Delete a world", List.of(), Set.of());
+        registerInternalCommand(me.memeweft.paper.commands.world.TpWorldCommand.create(), "server", "Teleport to a world", List.of(), Set.of());
+        registerInternalCommand(me.memeweft.paper.commands.world.ListWorldsCommand.create(), "server", "List all loaded worlds", List.of(), Set.of());
     }
 
     private static void registerInternalCommand(final LiteralCommandNode<CommandSourceStack> node, final String namespace, final String description, final List<String> aliases, final Set<CommandRegistrationFlag> flags) {
