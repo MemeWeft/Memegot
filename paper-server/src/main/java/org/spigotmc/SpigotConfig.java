@@ -205,7 +205,7 @@ public class SpigotConfig {
     public static Map<Identifier, Integer> forcedStats = new HashMap<>();
 
     private static void stats() {
-        SpigotConfig.disableStatSaving = SpigotConfig.getBoolean("stats.disable-saving", false);
+        SpigotConfig.disableStatSaving = SpigotConfig.getBoolean("stats.disable-saving", true); // Memegot - disable player stat saving
 
         if (!SpigotConfig.config.contains("stats.forced-stats")) {
             SpigotConfig.config.createSection("stats.forced-stats");
@@ -284,7 +284,7 @@ public class SpigotConfig {
 
     public static boolean saveUserCacheOnStopOnly;
     private static void saveUserCacheOnStopOnly() {
-        SpigotConfig.saveUserCacheOnStopOnly = SpigotConfig.getBoolean("settings.save-user-cache-on-stop-only", false);
+        SpigotConfig.saveUserCacheOnStopOnly = SpigotConfig.getBoolean("settings.save-user-cache-on-stop-only", true); // Memegot - enable user cache saving
     }
 
     public static double movedWronglyThreshold;
@@ -332,20 +332,20 @@ public class SpigotConfig {
     public static boolean disableAdvancementSaving;
     public static List<String> disabledAdvancements;
     private static void disabledAdvancements() {
-        SpigotConfig.disableAdvancementSaving = SpigotConfig.getBoolean("advancements.disable-saving", false);
+        SpigotConfig.disableAdvancementSaving = SpigotConfig.getBoolean("advancements.disable-saving", true); // Memegot - disable advancement saving
         SpigotConfig.disabledAdvancements = SpigotConfig.getList("advancements.disabled", List.of("minecraft:story/disabled"));
     }
 
     public static boolean logVillagerDeaths;
     public static boolean logNamedDeaths;
     private static void logDeaths() {
-        SpigotConfig.logVillagerDeaths = SpigotConfig.getBoolean("settings.log-villager-deaths", true);
+        SpigotConfig.logVillagerDeaths = SpigotConfig.getBoolean("settings.log-villager-deaths", false); // Memegot - disable villager death logging
         SpigotConfig.logNamedDeaths = SpigotConfig.getBoolean("settings.log-named-deaths", true);
     }
 
     public static boolean disablePlayerDataSaving;
     private static void disablePlayerDataSaving() {
-        SpigotConfig.disablePlayerDataSaving = SpigotConfig.getBoolean("players.disable-saving", false);
+        SpigotConfig.disablePlayerDataSaving = SpigotConfig.getBoolean("players.disable-saving", true); // Memegot - disable player data saving
     }
 
     public static boolean belowZeroGenerationInExistingChunks;

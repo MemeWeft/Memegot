@@ -98,7 +98,7 @@ public class SpigotWorldConfig {
     public int pitcherPlantModifier;
 
     private int getAndValidateGrowth(String crop) {
-        int modifier = this.getInt("growth." + crop.toLowerCase(java.util.Locale.ENGLISH) + "-modifier", 100);
+        int modifier = this.getInt("growth." + crop.toLowerCase(java.util.Locale.ENGLISH) + "-modifier", 1); // Memegot - minimalize all grow ticking
         if (modifier == 0) {
             this.log("Cannot set " + crop + " growth to zero, defaulting to 100");
             modifier = 100;
@@ -180,7 +180,7 @@ public class SpigotWorldConfig {
 
     public int itemDespawnRate;
     private void itemDespawnRate() {
-        this.itemDespawnRate = this.getInt("item-despawn-rate", 6000);
+        this.itemDespawnRate = this.getInt("item-despawn-rate", 3000); // Memegot - quicken item despawn rate
         this.log("Item Despawn Rate: " + this.itemDespawnRate);
     }
 
@@ -265,11 +265,11 @@ public class SpigotWorldConfig {
     public boolean hopperCanLoadChunks;
     private void hoppers() {
         // Set the tick delay between hopper item movements
-        this.hopperTransfer = this.getInt("ticks-per.hopper-transfer", 8);
+        this.hopperTransfer = this.getInt("ticks-per.hopper-transfer", 0); // Memegot - disable hopper transfer ticking
         if (SpigotConfig.version < 11) {
-            this.set("ticks-per.hopper-check", 1);
+            this.set("ticks-per.hopper-check", 0); // Memegot - disable hopper check ticking
         }
-        this.hopperCheck = this.getInt("ticks-per.hopper-check", 1);
+        this.hopperCheck = this.getInt("ticks-per.hopper-check", 0); // Memegot - disable hopper check ticking
         this.hopperAmount = this.getInt("hopper-amount", 1);
         this.hopperCanLoadChunks = this.getBoolean("hopper-can-load-chunks", false);
         this.log("Hopper Transfer: " + this.hopperTransfer + " Hopper Check: " + this.hopperCheck + " Hopper Amount: " + this.hopperAmount + " Hopper Can Load Chunks: " + this.hopperCanLoadChunks);
@@ -278,7 +278,7 @@ public class SpigotWorldConfig {
     public int arrowDespawnRate;
     public int tridentDespawnRate;
     private void arrowDespawnRate() {
-        this.arrowDespawnRate = this.getInt("arrow-despawn-rate", 1200);
+        this.arrowDespawnRate = this.getInt("arrow-despawn-rate", 200); // Memegot - quicken arrow despawn rate
         this.tridentDespawnRate = this.getInt("trident-despawn-rate", this.arrowDespawnRate);
         this.log("Arrow Despawn Rate: " + this.arrowDespawnRate + " Trident Respawn Rate:" + this.tridentDespawnRate);
     }
